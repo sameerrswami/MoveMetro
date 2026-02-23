@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: movemetro-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=movemetro
+      - POSTGRES_USER=movemetro
+      - POSTGRES_PASSWORD=movemetro_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - movemetro-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U movemetro" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: movemetro-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - movemetro-net
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: movemetro-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=movemetro
+      - DB_USER=movemetro
+      - DB_PASSWORD=movemetro_pass
+      - DATABASE_URL=postgres://movemetro:movemetro_pass@postgres:5432/movemetro
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=${JWT_SECRET:-movemetro-production-jwt-secret}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-movemetro-production-refresh-secret}
+      - JWT_EXPIRES_IN=15m
+      - JWT_REFRESH_EXPIRES_IN=7d
+      - QR_HMAC_SECRET=${QR_HMAC_SECRET:-movemetro-production-qr-secret}
+      - ENABLE_METRICS=true
+      - TRANSFER_PENALTY=5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - movemetro-net
+
+volumes:
+  postgres_data:
+  redis_data:
+
+
+networks:
+  movemetro-net:
+    driver: bridge

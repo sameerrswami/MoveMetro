@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-950 text-gray-100 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl;
+  }
+
+  .glass-card-light {
+    @apply bg-white/10 backdrop-blur-lg border border-white/15 rounded-xl;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-metro-600 to-metro-700 text-white font-semibold py-3 px-6 rounded-xl hover:from-metro-500 hover:to-metro-600 transition-all duration-300 ease-out hover:shadow-lg hover:shadow-metro-600/30 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-white/10 text-white font-medium py-3 px-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300 active:scale-[0.98];
+  }
+
+  .btn-danger {
+    @apply bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-500 hover:to-red-600 transition-all duration-300 active:scale-[0.98];
+  }
+
+  .input-field {
+    @apply w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-metro-500 focus:ring-1 focus:ring-metro-500/50 transition-all duration-300;
+  }
+
+  .select-field {
+    @apply w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white appearance-none focus:outline-none focus:border-metro-500 focus:ring-1 focus:ring-metro-500/50 transition-all duration-300;
+  }
+
+  .metro-line {
+    @apply h-1 rounded-full;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-active {
+    @apply badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/30;
+  }
+
+  .badge-cancelled {
+    @apply badge bg-red-500/20 text-red-400 border border-red-500/30;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Gradient mesh background */
+.mesh-gradient {
+  background:
+    radial-gradient(at 20% 80%, rgba(66, 99, 235, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 20%, rgba(92, 124, 250, 0.1) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(30, 58, 138, 0.08) 0px, transparent 50%);
+}
+
+/* Leaflet Overrides */
+.leaflet-container {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(17, 24, 39, 0.9) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white !important;
+  border-radius: 12px !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(17, 24, 39, 0.9) !important;
+}
+
+.custom-div-icon {
+  background: transparent !important;
+  border: none !important;
+}

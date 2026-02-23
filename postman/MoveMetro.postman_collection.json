@@ -1,0 +1,369 @@
+{
+    "info": {
+        "name": "MoveMetro API",
+        "description": "Metro Booking Service API Collection",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:5000/api/v1"
+        },
+        {
+            "key": "accessToken",
+            "value": ""
+        },
+        {
+            "key": "adminToken",
+            "value": ""
+        }
+    ],
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/auth/register",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"test123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Login User",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/auth/login",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"user@movemetro.com\",\n  \"password\": \"user123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Login Admin",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/auth/login",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@movemetro.com\",\n  \"password\": \"admin123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Refresh Token",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/auth/refresh",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Stops",
+            "item": [
+                {
+                    "name": "Create Stop",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/admin/stops",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"New Stop\",\n  \"code\": \"NWSTP\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "List All Stops",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/admin/stops",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminToken}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Update Stop",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{baseUrl}}/admin/stops/:id",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Stop Name\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Stop",
+                    "request": {
+                        "method": "DELETE",
+                        "url": "{{baseUrl}}/admin/stops/:id",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminToken}}"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Routes",
+            "item": [
+                {
+                    "name": "Create Route",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/admin/routes",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Green Line\",\n  \"color\": \"#00FF00\",\n  \"stops\": []\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Upload Routes (Bulk)",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/admin/routes/upload",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"routes\": [\n    {\n      \"name\": \"Blue Line\",\n      \"color\": \"#0052A5\",\n      \"stops\": [\n        { \"name\": \"Dwarka Sector 21\", \"code\": \"DWRK21\", \"travelTimeToNext\": 3 },\n        { \"name\": \"Rajiv Chowk\", \"code\": \"RJVCHK\", \"travelTimeToNext\": 4 },\n        { \"name\": \"Noida City Centre\", \"code\": \"NDACC\", \"travelTimeToNext\": 0 }\n      ]\n    }\n  ]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Refresh Graph",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/admin/routes/refresh-graph",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminToken}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "List All Routes",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/admin/routes",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminToken}}"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Bookings",
+            "item": [
+                {
+                    "name": "Create Booking",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/bookings",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "unique-key-123"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"sourceStopId\": \"<source_stop_id>\",\n  \"destinationStopId\": \"<dest_stop_id>\",\n  \"mode\": \"OPTIMAL\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Booking by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/bookings/:id",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "My Bookings",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/bookings/my?page=1&limit=10",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Cancel Booking",
+                    "request": {
+                        "method": "PATCH",
+                        "url": "{{baseUrl}}/bookings/:id/cancel",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Verify QR",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/bookings/verify-qr",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"qrString\": \"<qr_string_from_booking>\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Routes",
+            "item": [
+                {
+                    "name": "Preview Route",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/routes/preview?source=DWRK21&destination=HUDACC&mode=OPTIMAL",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Health",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/health"
+                    }
+                },
+                {
+                    "name": "Prometheus Metrics",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/health/metrics"
+                    }
+                }
+            ]
+        }
+    ]
+}
