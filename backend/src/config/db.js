@@ -41,6 +41,12 @@ const initDatabase = () => {
         sequelize = new Sequelize(env.db.url, {
             dialect: env.db.dialect,
             logging: env.nodeEnv === 'development' ? (msg) => logger.debug(msg) : false,
+            dialectOptions: env.db.url.includes('neon.tech') || env.nodeEnv === 'production' ? {
+                ssl: {
+                    require: true,
+                    rejectUnauthorized: false
+                }
+            } : {},
             pool: {
                 max: 20,
                 min: 2,
