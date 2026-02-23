@@ -13,18 +13,20 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [bookingsRes, healthRes] = await Promise.all([
+                const [bookingsRes, statsRes, healthRes] = await Promise.all([
                     API.get(isAdmin ? '/admin/stops' : '/bookings/my?limit=5'),
+                    isAdmin ? Promise.resolve(null) : API.get('/bookings/stats'),
                     API.get('/health'),
                 ]);
 
                 if (!isAdmin) {
                     const bookings = bookingsRes.data.data.bookings || [];
+                    const statsData = statsRes.data.data;
                     setRecentBookings(bookings);
                     setStats({
-                        bookings: bookingsRes.data.data.pagination?.total || bookings.length,
-                        active: bookings.filter((b) => b.status === 'ACTIVE').length,
-                        cancelled: bookings.filter((b) => b.status === 'CANCELLED').length,
+                        bookings: statsData.total,
+                        active: statsData.ACTIVE,
+                        cancelled: statsData.CANCELLED,
                     });
                 }
                 setHealth(healthRes.data);

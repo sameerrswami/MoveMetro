@@ -41,6 +41,7 @@ router.post('/', createBookingValidator, validate, bookingController.createBooki
  *     security: [{ bearerAuth: [] }]
  */
 router.post('/verify-qr', verifyQRValidator, validate, bookingController.verifyQR);
+router.get('/stats', bookingController.getUserStats);
 
 router.get('/my', bookingController.getUserBookings);
 router.get('/:id', bookingController.getBooking);

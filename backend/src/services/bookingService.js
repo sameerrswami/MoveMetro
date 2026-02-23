@@ -204,6 +204,33 @@ class BookingService {
     async verifyQR(qrString) {
         return qrService.verifyQR(qrString);
     }
+
+    async getUserStats(userId) {
+        const stats = await Booking.findAll({
+            where: { user_id: userId },
+            attributes: [
+                'status',
+                [sequelize.fn('COUNT', sequelize.col('id')), 'count']
+            ],
+            group: ['status']
+        });
+
+        const result = {
+            total: 0,
+            ACTIVE: 0,
+            CANCELLED: 0,
+            COMPLETED: 0
+        };
+
+        stats.forEach(s => {
+            const status = s.get('status');
+            const count = parseInt(s.get('count'));
+            result[status] = count;
+            result.total += count;
+        });
+
+        return result;
+    }
 }
 
 module.exports = new BookingService();

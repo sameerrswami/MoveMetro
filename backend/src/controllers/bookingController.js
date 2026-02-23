@@ -66,6 +66,15 @@ class BookingController {
             next(error);
         }
     }
+
+    async getUserStats(req, res, next) {
+        try {
+            const stats = await bookingService.getUserStats(req.user.id);
+            res.status(200).json({ success: true, data: stats });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new BookingController();
